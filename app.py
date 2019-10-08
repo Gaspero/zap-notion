@@ -12,23 +12,26 @@ app = Flask(__name__)
 def add_visit(token, clients_url, visits_url, telefon, fio, chto_budem_delat, stoimost, datetime_start, datetime_end):
     client = NotionClient(token)
     clients_collection = client.get_collection_view(clients_url)
-    filter_params = [{
-        "property": "telefon",
-        "comparator": "enum_contains",
-        "value": telefon
-    }]
-    results = clients_collection.build_query(filter=filter_params).execute()
-    if results:
-        customer = results[0]
-    else:
-        customer = clients_collection.collection.add_row()
-        customer.telefon = telefon
-        customer.fio = fio
+    # filter_params = [{
+    #     "property": "telefon",
+    #     "comparator": "enum_contains",
+    #     "value": telefon
+    # }]
+    # results = clients_collection.build_query(filter=filter_params).execute()
+    # if results:
+    #     customer = results[0]
+    # else:
+    #     customer = clients_collection.collection.add_row()
+    #     customer.telefon = telefon
+    #     customer.fio = fio
 
     visits_collection = client.get_collection_view(visits_url)
     visit = visits_collection.collection.add_row()
-    visit.klient = customer
-    visit.stoimost = int(stoimost)
+    # visit.klient = customer
+    try:
+        visit.stoimost = int(stoimost)
+    except:
+        pass
     visit.chto_budem_delat = chto_budem_delat
     visit.data = NotionDate(start=datetime_start, end=datetime_end)
 
@@ -52,7 +55,3 @@ if __name__ == '__main__':
     app.debug = True
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
-
-
-
-# '%Y-%m-%dT%H:%M:%S%z'
