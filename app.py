@@ -30,7 +30,7 @@ def add_visit(token, clients_url, visits_url, telefon, fio, chto_budem_delat, st
     visit.stoimost = stoimost
     visit.chto_budem_delat = chto_budem_delat
     visit.data = NotionDate(start=datetime_start, end=datetime_end)
-z
+
 
 @app.route('/add_visit', methods=['GET'])
 def twitter():
