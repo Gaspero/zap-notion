@@ -18,22 +18,22 @@ def add_visit(token, clients_url, visits_url, telefon, fio, chto_budem_delat, st
     }]
     results = clients_collection.build_query(filter=filter_params).execute()
     if results:
-        client = results[0]
+        customer = results[0]
     else:
-        client = clients_collection.collection.add_row()
-        client.telefon = telefon
-        client.fio = fio
+        customer = clients_collection.collection.add_row()
+        customer.telefon = telefon
+        customer.fio = fio
 
     visits_collection = client.get_collection_view(visits_url)
     visit = visits_collection.collection.add_row()
-    visit.klient = client
-    visit.stoimost = stoimost
+    visit.klient = customer
+    visit.stoimost = int(stoimost)
     visit.chto_budem_delat = chto_budem_delat
     visit.data = NotionDate(start=datetime_start, end=datetime_end)
 
 
-@app.route('/add_visit', methods=['GET'])
-def twitter():
+@app.route('/visit_adder', methods=['GET'])
+def visit_adder():
     telefon = request.args.get('telefon')
     fio = request.args.get('fio')
     chto_budem_delat = request.args.get('chto_budem_delat')
